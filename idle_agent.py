@@ -45,7 +45,9 @@ async def send_message():
         instance_idle.timestamp.GetCurrentTime()
         instance_idle.instance_id = INSTANCE_ID
         if last_connected_timestamp is not None:
-            instance_idle.last_connected_timestamp.FromDatetime(last_connected_timestamp)
+            instance_idle.last_connected_timestamp.FromDatetime(
+                last_connected_timestamp
+            )
         encoded_message = base64.b64encode(instance_idle.SerializeToString()).decode(
             "ascii"
         )
@@ -67,5 +69,6 @@ async def main():
     while True:
         await send_message()
         await asyncio.sleep(CHECK_INTERVAL)
+
 
 asyncio.run(main())
