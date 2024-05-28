@@ -24,7 +24,13 @@ def count_connections():
     return len(result.stdout.decode("utf-8").strip().split("\n")) - 1
 
 
+last_connected_timestamp = datetime.datetime.now()
+message_sent = False
+
+
 async def send_message():
+    global last_connected_timestamp
+    global message_sent
     session = boto3.Session(
         aws_access_key_id=AWS_ACCESS_KEY_ID,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
@@ -33,6 +39,7 @@ async def send_message():
     if count_connections() > 0:
         last_connected_timestamp = datetime.datetime.now()
         message_sent = False
+    else:
         if (
             datetime.datetime.now() - last_connected_timestamp.ToDatetime()
         ).total_seconds() >= IDLE_TIME and not message_sent:
